@@ -18,13 +18,10 @@ jobs:
       - name: Deploy to Firebase Hosting
         env:
           SERVICE_ACCOUNT_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
-          PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
         run: |
           node --version
-          [ -n "$PROJECT_ID" ] && echo "PROJECT_ID: set" || echo "ERROR: FIREBASE_PROJECT_ID secret is missing"
-          [ -n "$SERVICE_ACCOUNT_JSON" ] && echo "SERVICE_ACCOUNT: set" || echo "ERROR: FIREBASE_SERVICE_ACCOUNT secret is missing"
-          echo "$SERVICE_ACCOUNT_JSON" | jq -r '"client_email: " + .client_email + ", project_id: " + .project_id' || { echo "ERROR: FIREBASE_SERVICE_ACCOUNT is not valid JSON"; exit 1; }
+          [ -n "$SERVICE_ACCOUNT_JSON" ] && echo "SERVICE_ACCOUNT: set" || { echo "ERROR: FIREBASE_SERVICE_ACCOUNT secret is missing"; exit 1; }
           echo "$SERVICE_ACCOUNT_JSON" | jq . > /tmp/sa.json
           export GOOGLE_APPLICATION_CREDENTIALS=/tmp/sa.json
-          npx firebase-tools@latest deploy --only hosting --project "$PROJECT_ID" --non-interactive
+          npx firebase-tools@latest deploy --only hosting --project jh-chandanagar-hyd-83c57 --non-interactive
           rm -f /tmp/sa.json
