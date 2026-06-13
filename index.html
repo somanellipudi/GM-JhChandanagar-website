@@ -80,13 +80,13 @@ input,select,textarea{font-family:var(--font)}
 }
 
 /* --- HERO --- */
-.hero{margin-top:56px;background:#080808;position:relative;overflow:hidden;min-height:calc(100vh - 56px);min-height:calc(100svh - 56px)}
+.hero{margin-top:56px;background:#080808;position:relative;overflow:hidden}
 .h-track{display:flex;transition:transform .7s var(--ease);will-change:transform}
-.h-slide{min-width:100%;display:flex;align-items:stretch;min-height:calc(100vh - 56px);min-height:calc(100svh - 56px);position:relative}
+.h-slide{min-width:100%;display:flex;align-items:stretch;position:relative}
 
 /* Slide 1 — split */
 .h-s1{display:grid;grid-template-columns:58% 42%}
-.h-s1-l{display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:60px 52px 60px 60px;position:relative;z-index:2}
+.h-s1-l{display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:52px 52px 52px 60px;position:relative;z-index:2}
 .h-s1-l::after{content:'';position:absolute;top:10%;right:0;bottom:10%;width:1px;background:linear-gradient(to bottom,transparent,rgba(255,255,255,.06) 30%,rgba(255,255,255,.06) 70%,transparent)}
 .h-s1 .h-logo{height:30px;opacity:.85;margin-bottom:36px;display:block}
 .h-loc-tag{font-size:10px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--red);margin-bottom:18px;display:flex;align-items:center;gap:10px}
@@ -151,10 +151,20 @@ input,select,textarea{font-family:var(--font)}
 .h-dot.on{background:var(--white);width:20px;border-radius:3px}
 
 @media(max-width:900px){
-  .hero{min-height:auto}
+  .h-track{align-items:flex-start}
   .h-s1{grid-template-columns:1fr}
-  .h-slide{min-height:auto}
-  .h-s1-l{min-height:auto;padding:36px 20px 32px;align-items:center;text-align:center}
+  .h-s1-l{padding:36px 20px 32px;align-items:center;text-align:center;justify-content:flex-start}
+  .h-s1 .h-logo{display:none}
+  .h-s2{padding:28px 16px 24px;justify-content:flex-start}
+  .h-s2-label{margin-bottom:10px}
+  .h-s2 h2{margin-bottom:6px}
+  .h-s2 .h-sub{margin-bottom:20px}
+  .offer-grid{grid-template-columns:1fr 1fr}
+  .offer-col{padding:16px 14px}
+  .offer-col ul{gap:5px;margin-bottom:12px}
+  .offer-col li{font-size:12px}
+  .offer-price .now{font-size:22px}
+  .offer-cta{margin-top:16px}
   .h-s1-l::after{display:none}
   .h-s1 .h-logo{margin-bottom:20px}
   .h-loc-tag{justify-content:center;margin-bottom:12px}
@@ -165,7 +175,6 @@ input,select,textarea{font-family:var(--font)}
   .h-s1-r{display:none}
 }
 @media(max-width:600px){
-  .offer-grid{grid-template-columns:1fr}
   .h-stats{gap:16px}
   .h-stat{padding-right:16px;margin-right:16px}
   .pk{flex:0 0 82vw}
