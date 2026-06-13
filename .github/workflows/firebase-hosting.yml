@@ -21,20 +21,10 @@ jobs:
           PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
         run: |
           node --version
-          echo "Project ID set: $([ -n "$PROJECT_ID" ] && echo yes || echo NO - SECRET MISSING)"
-          echo "Service account set: $([ -n "$SERVICE_ACCOUNT_JSON" ] && echo yes || echo NO - SECRET MISSING)"
-          python3 -c "
-import os, json, sys
-sa = os.environ.get('SERVICE_ACCOUNT_JSON','')
-if not sa: print('ERROR: empty secret'); sys.exit(1)
-try:
-    d = json.loads(sa)
-    with open('/tmp/sa.json','w') as f: json.dump(d,f)
-    print('JSON valid. client_email:', d.get('client_email','?'))
-    print('project_id in JSON:', d.get('project_id','?'))
-except Exception as e:
-    print('JSON parse error:', e); sys.exit(1)
-"
+          [ -n "$PROJECT_ID" ] && echo "PROJECT_ID: set" || echo "ERROR: FIREBASE_PROJECT_ID secret is missing"
+          [ -n "$SERVICE_ACCOUNT_JSON" ] && echo "SERVICE_ACCOUNT: set" || echo "ERROR: FIREBASE_SERVICE_ACCOUNT secret is missing"
+          echo "$SERVICE_ACCOUNT_JSON" | jq -r '"client_email: " + .client_email + ", project_id: " + .project_id' || { echo "ERROR: FIREBASE_SERVICE_ACCOUNT is not valid JSON"; exit 1; }
+          echo "$SERVICE_ACCOUNT_JSON" | jq . > /tmp/sa.json
           export GOOGLE_APPLICATION_CREDENTIALS=/tmp/sa.json
           npx firebase-tools@latest deploy --only hosting --project "$PROJECT_ID" --non-interactive
           rm -f /tmp/sa.json
