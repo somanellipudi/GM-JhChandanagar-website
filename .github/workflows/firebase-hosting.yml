@@ -21,6 +21,20 @@ jobs:
           PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
         run: |
           node --version
-          echo "$SERVICE_ACCOUNT_JSON" > /tmp/sa.json
-          GOOGLE_APPLICATION_CREDENTIALS=/tmp/sa.json npx firebase-tools@latest deploy --only hosting --project "$PROJECT_ID" --non-interactive
+          echo "Project ID set: $([ -n "$PROJECT_ID" ] && echo yes || echo NO - SECRET MISSING)"
+          echo "Service account set: $([ -n "$SERVICE_ACCOUNT_JSON" ] && echo yes || echo NO - SECRET MISSING)"
+          python3 -c "
+import os, json, sys
+sa = os.environ.get('SERVICE_ACCOUNT_JSON','')
+if not sa: print('ERROR: empty secret'); sys.exit(1)
+try:
+    d = json.loads(sa)
+    with open('/tmp/sa.json','w') as f: json.dump(d,f)
+    print('JSON valid. client_email:', d.get('client_email','?'))
+    print('project_id in JSON:', d.get('project_id','?'))
+except Exception as e:
+    print('JSON parse error:', e); sys.exit(1)
+"
+          export GOOGLE_APPLICATION_CREDENTIALS=/tmp/sa.json
+          npx firebase-tools@latest deploy --only hosting --project "$PROJECT_ID" --non-interactive
           rm -f /tmp/sa.json
