@@ -1,0 +1,6 @@
+firebase.json
+.firebaseignore
+DEPLOYMENT.md
+appointments-script.gs
+*.gs
+*.md

@@ -1,0 +1,34 @@
+{
+  "hosting": {
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      ".firebaseignore",
+      "DEPLOYMENT.md",
+      "appointments-script.gs",
+      "*.gs"
+    ],
+    "headers": [
+      {
+        "source": "**/*.html",
+        "headers": [
+          { "key": "Cache-Control", "value": "public, max-age=3600" }
+        ]
+      },
+      {
+        "source": "**/*.@(png|jpg|jpeg|svg|ico)",
+        "headers": [
+          { "key": "Cache-Control", "value": "public, max-age=604800, immutable" }
+        ]
+      }
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ],
+    "cleanUrls": true,
+    "trailingSlash": false
+  }
+}
